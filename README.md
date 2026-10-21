@@ -1,4 +1,4 @@
-"AquaX Impact Studio "
+#AquaX Impact Studio 
 **A Python-based sustainability impact calculator for wastewater treatment operations.**
 
 AquaX Impact Studio was developed as a team hackathon prototype to estimate the potential environmental benefits of wastewater treatment optimizations and generate a potential  sample report that demonstrates how calculated results can be transformed into documentation for stakeholder review.
@@ -60,7 +60,8 @@ These are calculated scenario results, not measured reductions from an operating
 The AquaX Impact Calculator allows users to enter wastewater treatment plant conditions and explore the potential environmental impact of operational improvements.
 
 The left sidebar contains shared operating assumptions, including daily influent flow, baseline electricity intensity, chemical consumption and operating days.
-When you run it on streamlit, change value for eg. Inflow rate (with arrow pointed at left) to see the different metrics change in the middle, one of the metrics that will change is the "Daily energy saved" (arrow pointed at middle)
+
+When you run it on streamlit, adjusting one of the metrics such as the influent flow rate  (with arrow pointed at left) in the left sidebar automatically updates the calculated metrics, including the daily energy savings displayed in the main dashboard (arrow pointed at middle).
 
 The main dashboard allows users to adjust optimized energy intensity, chemical reduction percentages and water reuse targets. Results are recalculated to display the estimated environmental impact.
 
@@ -87,10 +88,7 @@ The report includes:
 - Calculation methodologies, assumptions and data-quality information
 - Sustainability reporting framework mappings and outstanding disclosure requirements
 - Limitations and verification disclaimers
-
-
 The sample report demonstrates how calculated results can be transformed into documentation for stakeholder review. It is not an officially audited ESG report.
-# AquaX Impact Studio
 
 
 
