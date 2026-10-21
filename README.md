@@ -1,7 +1,7 @@
 #AquaX Impact Studio 
 **A Python-based sustainability impact calculator for wastewater treatment operations.**
 
-AquaX Impact Studio was developed as a team hackathon prototype to estimate the potential environmental benefits of wastewater treatment optimizations and generate a potential  sample report that demonstrates how calculated results can be transformed into documentation for stakeholder review.
+AquaX Impact Studio was developed as a team project prototype in the "Hack and Hire" hackathon hosted by Projet to estimate the potential environmental benefits of wastewater treatment optimizations and generate a potential  sample report that demonstrates how calculated results can be transformed into documentation for stakeholder review.
 
 The project compares baseline and optimized operating scenarios to calculate energy savings, avoided Scope 2 electricity emissions, reduced chemical consumption, and water reuse.
 
@@ -181,14 +181,7 @@ Outputs include units, formulas, assumptions, data-quality labels, and emission-
 - Chemical emission factors are not fully verified.
 - Chemical mass reduction should not be interpreted as verified chemical-related emissions reduction.
 - The prototype is not a certified ESG reporting system and should not be used as evidence of actual plant savings without appropriate data validation.
-
-## Team Collaboration
-
-This project was developed collaboratively during a hackathon.
-
-**My primary contribution:** Backend calculation engine, input validation, factor configuration, automated testing, and integration documentation.
-
-The broader team project also involved frontend/dashboard development and reporting/export functionality.
+.
 
 ## Future Improvements
 
@@ -199,4 +192,4 @@ The broader team project also involved frontend/dashboard development and report
 - Connect the calculation engine to production-ready interfaces.
 
 
-The frontend dashboard and reporting/export components were developed collaboratively by other team members.
+
