@@ -1,91 +1,161 @@
-AquaX Impact Studio
-A prototype sustainability calculator for wastewater and water-treatment operations. This repository models a plant-level scenario, compares baseline and optimized operating assumptions, and produces a transparent summary of potential energy, chemical, and emissions impacts.
+# AquaX Impact Studio
 
-The project is designed around a simple workflow for Audits :
+**A Python-based sustainability impact calculator for wastewater treatment operations.**
 
-a user enters operational assumptions in a Streamlit UI,
-a calculation engine estimates baseline vs. optimized performance,
-the results are surfaced in dashboards and downloadable reporting outputs.
-This is a demo and prototype, not a certified ESG or compliance system.
+AquaX Impact Studio was developed as a team hackathon prototype to estimate the potential environmental benefits of wastewater treatment optimizations.
 
-What the app does
-The app estimates:
+The project compares baseline and optimized operating scenarios to calculate energy savings, avoided Scope 2 electricity emissions, reduced chemical consumption, and water reuse.
 
-energy saved (kWh/day and kWh/year),
-Scope 2 electricity emissions reduction (tCO2e),
-avoided chemical mass (kg/day and kg/year),
-water reuse volume (m3/day and m3/year),
-data-quality and formula metadata for each metric.
-Outputs are built around the AquaX concept described in the hackathon brief: a transparent, explanation-first sustainability impact calculator that exposes assumptions instead of hiding them behind opaque scores.
+**Project status:** Prototype — estimates are illustrative and not audited ESG results.
+
+## My Role — Backend & Calculation Engine Engineer
+
+I was responsible for developing the calculation backend, including:
+
+- **Calculation engine:** Implemented Python functions for energy savings, Scope 2 emissions reductions, chemical mass avoided, and water reuse.
+- **Input validation:** Added checks for missing, negative, invalid, or non-finite values and unsupported parameters.
+- **Historical baseline calculation:** Implemented an optional 12-month baseline using total historical electricity consumption divided by total treated water volume.
+- **Emission-factor configuration:** Centralized calculation factors and included source, unit, and verification metadata.
+- **Automated testing:** Developed pytest tests covering calculations, input validation, historical baselines, and integration assumptions.
+- **Backend integration:** Provided a structured `calculate_metrics(inputs)` interface and technical handover documentation for the frontend developer.
+
+## Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Backend calculation logic |
+| pytest | Automated validation and testing |
+| Streamlit | Frontend framework used in the broader team project |
+| GitHub | Version control and collaboration |
+
+## Core Calculations
+
+| Metric | Description | Output unit |
+|---|---|---|
+| Energy savings | Difference between baseline and optimized electricity use | kWh/day, kWh/year |
+| Scope 2 emissions reduction | Electricity savings multiplied by the grid emission factor | tCO₂e/year |
+| Chemical mass avoided | Reduction in daily chemical consumption | kg/day, kg/year |
+| Water reuse | Daily water reuse projected over operating days | m³/day, m³/year |
+
+Each metric includes calculation and data-quality metadata to improve transparency.
+
+## Example Results
+
+Using illustrative inputs of 1,000 m³/day influent, a baseline electricity intensity of 1.0 kWh/m³, optimized intensity of 0.8 kWh/m³, and 365 operating days:
+
+| Metric | Illustrative result |
+|---|---:|
+| Annual electricity savings | 73,000 kWh |
+| Annual Scope 2 emissions reduction | 29.346 tCO₂e |
+| Annual chemical mass avoided | 5,475 kg |
+| Annual water reuse | 255,500 m³ |
+
+These are calculated scenario results, not measured reductions from an operating treatment plant.
 
 
-Important constraints:
 
-plant names, client identities, and raw source mappings are intentionally withheld,
-the dataset is not for public redistribution,
-the results should be treated as illustrative estimates, not verified operational or ESG reporting.
-The data retain a number of real-world data-quality problems, including missing values, duplicate readings, outliers, and ambiguously labeled chemical fields. This is intentional and reflects the challenge context rather than a clean production dataset.
+## Running the Backend
 
-Quick start
-1. Clone and set up the environment
-git clone https://github.com/whansel007/ALW-HacknHire.git
-cd ALW-HacknHire
-python -m venv .venv
-source .venv/bin/activate   # macOS/Linux
-# or: .\.venv\Scripts\activate  # Windows PowerShell
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+Clone this repository:
 
-2. Run the Streamlit app in VS code
-streamlit run streamlit_app.py
+```bash
+git clone https://github.com/alphanzzo/aquax-impact-studio.git
+cd aquax-impact-studio
+```
 
-Then open the local URL shown in the terminal, typically:
+Install pytest:
 
-http://localhost:8501
-The app lets you enter project assumptions, calculate a scenario, and export the generated report content as a Word annex or JSON payload.
+```bash
+python -m pip install pytest
+```
 
-3. Run the backend demo
+Run the sample calculation:
+
+```bash
 python demo.py
+```
 
-4. Run tests
-pytest -q test_engine.py
-pytest -q test_role2_integration.py
-pytest -q test_streamlit_exports.py
+Run the automated tests:
 
-Notes on scope and limitations
-This prototype is intentionally scoped for a small demonstration workflow and should not be interpreted as audited ESG reporting.
+```bash
+python -m pytest -v test_engine.py
+```
 
-Key limitations:
+This repository demonstrates the backend module. The complete team application may require additional frontend and reporting files.
 
-default emission-factor values are provisional,
-chemical impact factors are not fully verified,
-the app models illustrative scenarios rather than causal, measured savings,
-the results are best used for exploration and communication, not operational control or formal external disclosure.
-Documentation
-BACKEND_HANDOVER.md — calculation engine overview and contract
-docs/PRD.md — product requirements and role breakdown
-docs/What we are building.md — design summary and rationale
-Suggested next steps
-confirm the emission-factor sources against authoritative references,
+## Engineering Considerations
 
-Project structure
-engine.py — core backend calculations, validation, and metric generation
-streamlit_app.py — main Streamlit application for scenario entry and results display
-config.py — emission factors and configuration constants
-exporter.py — DOCX and JSON export logic for reporting outputs
-mapper.py — mapping layer that converts calculations into report-ready payloads
-demo.py — simple command-line demo of the calculation engine
-demo_report.py — example script generating downloadable report artifacts
-test_engine.py — backend validation tests
-test_role2_integration.py — end-to-end checks between backend and UI assumptions
-test_streamlit_exports.py — export-related Streamlit validation tests
-data/ — anonymized plant operational datasets and workbook metadata
-docs/ — project brief, requirements, and supporting reference material
-BACKEND_HANDOVER.md — backend handover and API notes
-requirements.txt — Python dependencies for the app
-Dataset and confidentiality
-The repository contains anonymized plant datasets for two plants, labeled only as Plant A and Plant B.
+**Input validation**
 
-expand the mapping layer for reporting frameworks,
-improve data-cleaning and validation around the anonymized plant data,
-harden the export experience for downstream presentations and stakeholder reviews.
+The backend checks numerical inputs and rejects invalid values to prevent misleading or unusable calculations.
+
+**Historical baselines**
+
+When 12 months of electricity consumption and treated-water volume are supplied, the baseline is calculated using total energy divided by total treated water volume rather than an unweighted average of monthly intensities.
+
+**Transparency**
+
+Outputs include units, formulas, assumptions, data-quality labels, and emission-factor metadata where applicable.
+
+## Limitations
+
+- Calculations are based on user-supplied or illustrative assumptions.
+- The configured Singapore electricity grid emission factor is provisional and requires source verification.
+- Chemical emission factors are not fully verified.
+- Chemical mass reduction should not be interpreted as verified chemical-related emissions reduction.
+- The prototype is not a certified ESG reporting system and should not be used as evidence of actual plant savings without appropriate data validation.
+
+## Team Collaboration
+
+This project was developed collaboratively during a hackathon.
+
+**My primary contribution:** Backend calculation engine, input validation, factor configuration, automated testing, and integration documentation.
+
+The broader team project also involved frontend/dashboard development and reporting/export functionality.
+
+## Future Improvements
+
+- Verify emission factors against authoritative sources.
+- Integrate representative plant operating datasets.
+- Expand automated integration testing.
+- Improve reporting and factor traceability.
+- Connect the calculation engine to production-ready interfaces.
+
+## Backend Architecture
+
+```text
+Operational Inputs
+       |
+       v
+Input Validation
+       |
+       v
+Calculation Engine (engine.py)
+       |
+       +-- Energy Savings
+       +-- Scope 2 Emissions
+       +-- Chemical Mass Avoided
+       +-- Water Reuse
+       +-- Historical Baseline
+       |
+       v
+Structured Results + Metadata
+       |
+       v
+Frontend / Reporting Integration
+```
+
+The main backend interface is `calculate_metrics(inputs)`.
+
+The calculation module is designed to remain separate from the user interface, allowing other application components to request calculations without duplicating formulas.
+
+## Repository Files
+
+| File | Purpose |
+|---|---|
+| `engine.py` | Core calculations, validation, and historical baseline logic |
+| `config.py` | Emission factors and verification information |
+| `test_engine.py` | Automated tests |
+| `demo.py` | Example inputs and backend output |
+| `BACKEND_HANDOVER.md` | Integration contract and technical documentation |
+| `README.md` | Project overview |
